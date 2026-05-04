@@ -90,10 +90,10 @@ public struct Conversation: Codable, Equatable, Identifiable {
 }
 
 public enum ConversationStatus: String, Codable {
-    case active
-    case pending
+    case open
+    case assigned
+    case resolved
     case closed
-    case archived
 }
 
 // MARK: - Message
@@ -143,7 +143,7 @@ public struct SendMessageRequest: Codable {
 // MARK: - Pagination
 
 public struct PaginatedResponse<T: Codable>: Codable {
-    public let items: [T]
+    public let data: [T]
     public let page: Int
     public let limit: Int
     public let total: Int
