@@ -1,6 +1,6 @@
-# AI Chat Swift SDK
+# ChatFlow Swift SDK
 
-Official Swift SDK for AI Chat - Build AI-powered chat experiences in your iOS, macOS, tvOS, and watchOS apps.
+Official Swift SDK for the [ChatFlow Platform](https://chatflow.com) — Build AI-powered chat experiences in your iOS, macOS, tvOS, and watchOS apps.
 
 [![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)](https://swift.org)
 [![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS-blue.svg)](https://developer.apple.com)
@@ -42,7 +42,7 @@ import AIChatSDK
 
 let client = AIChatClient(
     config: AIChatConfig(
-        apiURL: URL(string: "https://api.aichat.com")!,
+        apiURL: URL(string: "https://api.chatflow.com")!,
         debug: true
     )
 )
@@ -290,10 +290,10 @@ MIT License - see [LICENSE](LICENSE) file
 
 ## Support
 
-- 📧 Email: support@aichat.com
+- 📧 Email: support@chatflow.com
 - 💬 Discord: [Join our community](https://discord.gg/aichat)
 - 📝 Issues: [GitHub Issues](https://github.com/aichat/swift-sdk/issues)
 
 ---
 
-Made with ❤️ by the AI Chat team
+Made with ❤️ by the ChatFlow team
