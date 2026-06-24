@@ -25,11 +25,7 @@ let package = Package(
                 "Alamofire",
                 "Starscream",
             ],
-            path: "Sources"),
-        .testTarget(
-            name: "AIChatSDKTests",
-            dependencies: ["AIChatSDK"],
-            path: "Tests"),
+            path: "Sources/AIChatSDK"),
     ],
     swiftLanguageVersions: [.v5]
 )

@@ -26,10 +26,14 @@ public class AIChatClient {
         
         let configuration = URLSessionConfiguration.default
         configuration.timeoutIntervalForRequest = config.timeout
-        self.session = Session(configuration: configuration)
+        
+        let interceptor = M2MRequestInterceptor(config: config)
+        self.session = Session(configuration: configuration, interceptor: interceptor)
         
         self.auth = AuthResource(config: config, session: session)
         self.chat = ChatResource(config: config, session: session, auth: auth)
+        
+        interceptor.auth = auth
     }
     
     /// Connect to WebSocket for real-time updates

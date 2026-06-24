@@ -1,7 +1,7 @@
 import Foundation
 
 /// Configuration for AI Chat SDK
-public struct AIChatConfig {
+public struct AIChatConfig: Sendable {
     /// Base API URL
     public let apiURL: URL
     
@@ -10,6 +10,12 @@ public struct AIChatConfig {
     
     /// API Key (optional, can use JWT instead)
     public let apiKey: String?
+    
+    /// Client ID for M2M authentication
+    public let clientId: String?
+    
+    /// Client Secret for M2M authentication
+    public let clientSecret: String?
     
     /// Request timeout
     public let timeout: TimeInterval
@@ -21,12 +27,16 @@ public struct AIChatConfig {
         apiURL: URL,
         wsURL: URL? = nil,
         apiKey: String? = nil,
+        clientId: String? = nil,
+        clientSecret: String? = nil,
         timeout: TimeInterval = 30,
         debug: Bool = false
     ) {
         self.apiURL = apiURL
         self.wsURL = wsURL
         self.apiKey = apiKey
+        self.clientId = clientId
+        self.clientSecret = clientSecret
         self.timeout = timeout
         self.debug = debug
     }

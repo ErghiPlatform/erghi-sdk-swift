@@ -15,14 +15,15 @@ public class ChatResource {
     
     /// Get conversation by ID
     public func getConversation(_ id: String) async throws -> Conversation {
-        return try await session.request(
+        let request = session.request(
             config.apiURL.appendingPathComponent("/api/conversations/\(id)"),
             method: .get,
             headers: headers
         )
-        .validate()
-        .serializingDecodable(Conversation.self, decoder: dateDecoder)
-        .value
+        return try await request
+            .validate()
+            .serializingDecodable(Conversation.self, decoder: dateDecoder)
+            .value
     }
     
     /// Create a new conversation
@@ -30,19 +31,24 @@ public class ChatResource {
         widgetId: String,
         metadata: [String: AnyCodable]? = nil
     ) async throws -> Conversation {
-        return try await session.request(
+        var parameters: [String: Any] = [
+            "widgetId": widgetId
+        ]
+        if let metadata = metadata {
+            parameters["metadata"] = metadata
+        }
+        
+        let request = session.request(
             config.apiURL.appendingPathComponent("/api/conversations"),
             method: .post,
-            parameters: [
-                "widgetId": widgetId,
-                "metadata": metadata as Any
-            ],
-            encoder: JSONParameterEncoder.default,
+            parameters: parameters,
+            encoding: JSONEncoding.default,
             headers: headers
         )
-        .validate()
-        .serializingDecodable(Conversation.self, decoder: dateDecoder)
-        .value
+        return try await request
+            .validate()
+            .serializingDecodable(Conversation.self, decoder: dateDecoder)
+            .value
     }
     
     /// Get messages for a conversation
@@ -51,18 +57,20 @@ public class ChatResource {
         page: Int = 1,
         limit: Int = 50
     ) async throws -> PaginatedResponse<Message> {
-        return try await session.request(
+        let parameters: [String: Any] = [
+            "page": page,
+            "limit": limit
+        ]
+        let request = session.request(
             config.apiURL.appendingPathComponent("/api/conversations/\(conversationId)/messages"),
             method: .get,
-            parameters: [
-                "page": page,
-                "limit": limit
-            ],
+            parameters: parameters,
             headers: headers
         )
-        .validate()
-        .serializingDecodable(PaginatedResponse<Message>.self, decoder: dateDecoder)
-        .value
+        return try await request
+            .validate()
+            .serializingDecodable(PaginatedResponse<Message>.self, decoder: dateDecoder)
+            .value
     }
     
     /// Send a message
@@ -70,28 +78,30 @@ public class ChatResource {
         conversationId: String,
         request: SendMessageRequest
     ) async throws -> Message {
-        return try await session.request(
+        let req = session.request(
             config.apiURL.appendingPathComponent("/api/conversations/\(conversationId)/messages"),
             method: .post,
             parameters: request,
             encoder: JSONParameterEncoder.default,
             headers: headers
         )
-        .validate()
-        .serializingDecodable(Message.self, decoder: dateDecoder)
-        .value
+        return try await req
+            .validate()
+            .serializingDecodable(Message.self, decoder: dateDecoder)
+            .value
     }
     
     /// Mark messages as read
     public func markAsRead(conversationId: String) async throws {
-        _ = try await session.request(
+        let request = session.request(
             config.apiURL.appendingPathComponent("/api/conversations/\(conversationId)/read"),
             method: .put,
             headers: headers
         )
-        .validate()
-        .serializingData()
-        .value
+        _ = try await request
+            .validate()
+            .serializingData()
+            .value
     }
     
     // MARK: - Private

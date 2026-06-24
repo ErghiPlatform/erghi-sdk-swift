@@ -204,3 +204,18 @@ public struct AnyCodable: Codable, Equatable {
         String(describing: lhs.value) == String(describing: rhs.value)
     }
 }
+
+// MARK: - TokenResponse
+
+public struct TokenResponse: Codable, Sendable {
+    public let accessToken: String
+    public let tokenType: String
+    public let expiresIn: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case accessToken = "access_token"
+        case tokenType = "token_type"
+        case expiresIn = "expires_in"
+    }
+}
+

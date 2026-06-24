@@ -112,6 +112,10 @@ public class AuthResource {
         self.refreshToken = refreshToken
     }
     
+    internal func storeM2MToken(_ token: String) {
+        self.accessToken = token
+    }
+    
     // MARK: - Private
     
     private var headers: HTTPHeaders {
