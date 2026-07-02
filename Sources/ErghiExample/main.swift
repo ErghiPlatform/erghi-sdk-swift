@@ -1,17 +1,17 @@
-// ChatFlow Swift SDK — Simulation / Integration Example
+// Erghi Swift SDK — Simulation / Integration Example
 //
 // A command-line program demonstrating the full chat flow against a locally
-// running ChatFlow stack (http://localhost:5000).
+// running Erghi stack (http://localhost:5000).
 //
 // Run:
-//   swift run ChatFlowExample
+//   swift run ErghiExample
 
 import Foundation
 import Combine
 import AIChatSDK
 
 let timestamp = Int(Date().timeIntervalSince1970)
-let testEmail = "demo_\(timestamp)@chatflow.dev"
+let testEmail = "demo_\(timestamp)@erghi.dev"
 let testPassword = "Demo@12345!"
 
 // Combine cancellables bag
@@ -23,7 +23,7 @@ let done = DispatchSemaphore(value: 0)
 // ── Main async task ──────────────────────────────────────────────────────────
 
 Task {
-    print("=== ChatFlow Swift SDK Simulation ===\n")
+    print("=== Erghi Swift SDK Simulation ===\n")
 
     let client = AIChatClient(config: AIChatConfig(
         apiUrl: "http://localhost:5000",
