@@ -1,7 +1,7 @@
 import Foundation
 
-/// Configuration for AI Chat SDK
-public struct AIChatConfig: Sendable {
+/// Configuration for Erghi SDK
+public struct ErghiConfig: Sendable {
     /// Base API URL
     public let apiURL: URL
     

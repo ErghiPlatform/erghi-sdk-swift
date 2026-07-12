@@ -1,16 +1,18 @@
 import Foundation
 import Alamofire
 
-/// Chat resource for AI Chat SDK
+/// Chat resource for Erghi SDK
 public class ChatResource {
-    private let config: AIChatConfig
+    private let config: ErghiConfig
     private let session: Session
     private let auth: AuthResource
+    private let getVisitorId: (() -> String?)?
     
-    init(config: AIChatConfig, session: Session, auth: AuthResource) {
+    init(config: ErghiConfig, session: Session, auth: AuthResource, getVisitorId: (() -> String?)? = nil) {
         self.config = config
         self.session = session
         self.auth = auth
+        self.getVisitorId = getVisitorId
     }
     
     /// Get conversation by ID
@@ -36,6 +38,9 @@ public class ChatResource {
         ]
         if let metadata = metadata {
             parameters["metadata"] = metadata
+        }
+        if let visitorId = getVisitorId?() {
+            parameters["visitorId"] = visitorId
         }
         
         let request = session.request(

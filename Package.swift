@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "AIChatSDK",
+    name: "ErghiSDK",
     platforms: [
         .iOS(.v15),
         .macOS(.v12),
@@ -11,8 +11,8 @@ let package = Package(
     ],
     products: [
         .library(
-            name: "AIChatSDK",
-            targets: ["AIChatSDK"]),
+            name: "ErghiSDK",
+            targets: ["ErghiSDK"]),
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", from: "5.9.0"),
@@ -20,12 +20,12 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "AIChatSDK",
+            name: "ErghiSDK",
             dependencies: [
                 "Alamofire",
                 "Starscream",
             ],
-            path: "Sources/AIChatSDK"),
+            path: "Sources/ErghiSDK"),
     ],
     swiftLanguageVersions: [.v5]
 )

@@ -1,7 +1,7 @@
 import Foundation
 
-/// Base error type for AI Chat SDK
-public enum AIChatError: Error, LocalizedError {
+/// Base error type for Erghi SDK
+public enum ErghiError: Error, LocalizedError {
     case authenticationFailed(String)
     case networkError(String)
     case invalidResponse(String)

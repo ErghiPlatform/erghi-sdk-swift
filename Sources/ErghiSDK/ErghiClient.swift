@@ -3,15 +3,21 @@ import Alamofire
 import Starscream
 import Combine
 
-/// Main AI Chat SDK Client
-public class AIChatClient {
-    public let config: AIChatConfig
+/// Main Erghi SDK Client
+public class ErghiClient {
+    public let config: ErghiConfig
     public let auth: AuthResource
-    public let chat: ChatResource
+    public private(set) lazy var chat: ChatResource = ChatResource(
+        config: config, session: session, auth: auth
+    ) { [weak self] in
+        self?.visitorId
+    }
     
     private let session: Session
     private var webSocket: WebSocket?
     private let messageSubject = PassthroughSubject<Message, Never>()
+    
+    public private(set) var visitorId: String?
     
     /// Stream of real-time messages
     public var messagePublisher: AnyPublisher<Message, Never> {
@@ -21,7 +27,7 @@ public class AIChatClient {
     /// Check if WebSocket is connected
     public private(set) var isConnected = false
     
-    public init(config: AIChatConfig) {
+    public init(config: ErghiConfig) {
         self.config = config
         
         let configuration = URLSessionConfiguration.default
@@ -31,7 +37,6 @@ public class AIChatClient {
         self.session = Session(configuration: configuration, interceptor: interceptor)
         
         self.auth = AuthResource(config: config, session: session)
-        self.chat = ChatResource(config: config, session: session, auth: auth)
         
         interceptor.auth = auth
     }
@@ -102,11 +107,45 @@ public class AIChatClient {
             webSocket.write(string: jsonString)
         }
     }
+    
+    /// Authenticate a visitor using a signed JWT from the customer's backend.
+    public func authenticateVisitor(widgetId: String, jwtToken: String) async throws -> String {
+        struct IdentityRequest: Encodable {
+            let widgetId: String
+            let jwtToken: String
+        }
+        
+        struct IdentityResponse: Decodable {
+            let visitorId: String?
+            let VisitorId: String?
+            
+            var resolvedId: String? { visitorId ?? VisitorId }
+        }
+        
+        let request = session.request(
+            config.apiURL.appendingPathComponent("/api/conversations/identity"),
+            method: .post,
+            parameters: IdentityRequest(widgetId: widgetId, jwtToken: jwtToken),
+            encoder: JSONParameterEncoder.default
+        )
+        
+        let response = try await request
+            .validate()
+            .serializingDecodable(IdentityResponse.self)
+            .value
+            
+        guard let vId = response.resolvedId else {
+            throw ErghiError.authenticationFailed("Visitor ID not found in identity response.")
+        }
+        
+        self.visitorId = vId
+        return vId
+    }
 }
 
 // MARK: - WebSocketDelegate
 
-extension AIChatClient: WebSocketDelegate {
+extension ErghiClient: WebSocketDelegate {
     public func didReceive(event: Starscream.WebSocketEvent, client: Starscream.WebSocketClient) {
         switch event {
         case .connected:
