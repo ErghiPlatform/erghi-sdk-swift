@@ -25,23 +25,23 @@ Add to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/aichat/swift-sdk.git", from: "1.0.0")
+    .package(url: "https://github.com/ErghiPlatform/erghi-sdks.git", from: "1.0.0")
 ]
 ```
 
 Or in Xcode:
 1. File > Add Package Dependencies
-2. Enter: `https://github.com/aichat/swift-sdk.git`
+2. Enter: `https://github.com/ErghiPlatform/erghi-sdks.git`
 
 ## Quick Start
 
 ### Initialize the Client
 
 ```swift
-import AIChatSDK
+import ErghiSDK
 
-let client = AIChatClient(
-    config: AIChatConfig(
+let client = ErghiClient(
+    config: ErghiConfig(
         apiURL: URL(string: "https://api.erghi.com")!,
         debug: true
     )
@@ -109,10 +109,10 @@ import Combine
 
 class ChatViewModel: ObservableObject {
     @Published var messages: [Message] = []
-    private let client: AIChatClient
+    private let client: ErghiClient
     private var cancellables = Set<AnyCancellable>()
     
-    init(client: AIChatClient) {
+    init(client: ErghiClient) {
         self.client = client
         setupWebSocket()
     }
@@ -148,13 +148,13 @@ class ChatViewModel: ObservableObject {
 
 ```swift
 import SwiftUI
-import AIChatSDK
+import ErghiSDK
 
 struct ChatView: View {
     @StateObject private var viewModel: ChatViewModel
     @State private var messageText = ""
     
-    init(client: AIChatClient) {
+    init(client: ErghiClient) {
         _viewModel = StateObject(wrappedValue: ChatViewModel(client: client))
     }
     
@@ -223,9 +223,9 @@ do {
     try await client.auth.login(
         LoginRequest(email: "user@example.com", password: "wrong")
     )
-} catch AIChatError.authenticationFailed(let message) {
+} catch ErghiError.authenticationFailed(let message) {
     print("Auth error: \(message)")
-} catch AIChatError.networkError(let message) {
+} catch ErghiError.networkError(let message) {
     print("Network error: \(message)")
 } catch {
     print("Error: \(error)")
@@ -234,7 +234,7 @@ do {
 
 ## API Documentation
 
-### AIChatClient
+### ErghiClient
 
 - `auth` - Authentication operations
 - `chat` - Chat operations
@@ -255,11 +255,11 @@ do {
 
 ### Errors
 
-- `AIChatError.authenticationFailed` - Auth errors
-- `AIChatError.networkError` - Network errors
-- `AIChatError.validationError` - Validation errors
-- `AIChatError.notFound` - Resource not found
-- `AIChatError.webSocketError` - WebSocket errors
+- `ErghiError.authenticationFailed` - Auth errors
+- `ErghiError.networkError` - Network errors
+- `ErghiError.validationError` - Validation errors
+- `ErghiError.notFound` - Resource not found
+- `ErghiError.webSocketError` - WebSocket errors
 
 ## Development
 
@@ -291,8 +291,8 @@ MIT License - see [LICENSE](LICENSE) file
 ## Support
 
 - 📧 Email: support@erghi.com
-- 💬 Discord: [Join our community](https://discord.gg/aichat)
-- 📝 Issues: [GitHub Issues](https://github.com/aichat/swift-sdk/issues)
+- 💬 Discord: [Join our community](https://discord.gg/erghi)
+- 📝 Issues: [GitHub Issues](https://github.com/ErghiPlatform/erghi-sdks/issues)
 
 ---
 

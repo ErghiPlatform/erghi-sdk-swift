@@ -8,7 +8,7 @@
 
 import Foundation
 import Combine
-import AIChatSDK
+import ErghiSDK
 
 let timestamp = Int(Date().timeIntervalSince1970)
 let testEmail = "demo_\(timestamp)@erghi.dev"
@@ -25,7 +25,7 @@ let done = DispatchSemaphore(value: 0)
 Task {
     print("=== Erghi Swift SDK Simulation ===\n")
 
-    let client = AIChatClient(config: AIChatConfig(
+    let client = ErghiClient(config: ErghiConfig(
         apiUrl: "http://localhost:5000",
         debug: true
     ))

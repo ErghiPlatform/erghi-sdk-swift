@@ -1,15 +1,15 @@
 import Foundation
 import Alamofire
 
-/// Authentication resource for AI Chat SDK
+/// Authentication resource for Erghi SDK
 public class AuthResource {
-    private let config: AIChatConfig
+    private let config: ErghiConfig
     private let session: Session
     
     private(set) var accessToken: String?
     private(set) var refreshToken: String?
     
-    init(config: AIChatConfig, session: Session) {
+    init(config: ErghiConfig, session: Session) {
         self.config = config
         self.session = session
     }
@@ -55,7 +55,7 @@ public class AuthResource {
     /// Refresh access token
     public func refresh() async throws -> AuthResponse {
         guard let refreshToken = refreshToken else {
-            throw AIChatError.authenticationFailed("No refresh token available")
+            throw ErghiError.authenticationFailed("No refresh token available")
         }
         
         let response = try await session.request(

@@ -2,12 +2,12 @@ import Foundation
 import Alamofire
 
 internal final class M2MRequestInterceptor: RequestInterceptor, @unchecked Sendable {
-    private let config: AIChatConfig
+    private let config: ErghiConfig
     internal var auth: AuthResource?
     private let lock = NSLock()
     private var isAuthenticating = false
     
-    init(config: AIChatConfig) {
+    init(config: ErghiConfig) {
         self.config = config
     }
     
@@ -50,7 +50,7 @@ internal final class M2MRequestInterceptor: RequestInterceptor, @unchecked Senda
         defer { lock.unlock() }
         
         guard let clientId = config.clientId, let clientSecret = config.clientSecret else {
-            completion(.failure(AIChatError.authenticationFailed("Missing client credentials")))
+            completion(.failure(ErghiError.authenticationFailed("Missing client credentials")))
             return
         }
         
