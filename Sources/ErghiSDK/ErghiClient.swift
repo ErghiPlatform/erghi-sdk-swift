@@ -51,6 +51,14 @@ public class ErghiClient {
             request.addValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
         }
         
+        if let workspaceId = config.workspaceId {
+            request.addValue(workspaceId, forHTTPHeaderField: "X-Workspace-Id")
+        }
+        
+        if let accountId = config.accountId {
+            request.addValue(accountId, forHTTPHeaderField: "X-Account-Id")
+        }
+        
         webSocket = WebSocket(request: request)
         webSocket?.delegate = self
         webSocket?.connect()

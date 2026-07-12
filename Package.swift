@@ -26,6 +26,10 @@ let package = Package(
                 "Starscream",
             ],
             path: "Sources/ErghiSDK"),
+        .testTarget(
+            name: "ErghiSDKTests",
+            dependencies: ["ErghiSDK"],
+            path: "Tests/ErghiSDKTests"),
     ],
     swiftLanguageVersions: [.v5]
 )

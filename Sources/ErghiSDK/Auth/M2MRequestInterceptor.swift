@@ -18,6 +18,14 @@ internal final class M2MRequestInterceptor: RequestInterceptor, @unchecked Senda
             request.setValue(apiKey, forHTTPHeaderField: "X-API-Key")
         }
         
+        if let workspaceId = config.workspaceId {
+            request.setValue(workspaceId, forHTTPHeaderField: "X-Workspace-Id")
+        }
+        
+        if let accountId = config.accountId {
+            request.setValue(accountId, forHTTPHeaderField: "X-Account-Id")
+        }
+        
         if request.url?.path.contains("/api/v1/auth/token") == true {
             completion(.success(request))
             return
