@@ -17,6 +17,12 @@ public struct ErghiConfig: Sendable {
     /// Client Secret for M2M authentication
     public let clientSecret: String?
     
+    /// Workspace ID
+    public let workspaceId: String?
+    
+    /// Account ID
+    public let accountId: String?
+    
     /// Request timeout
     public let timeout: TimeInterval
     
@@ -29,6 +35,8 @@ public struct ErghiConfig: Sendable {
         apiKey: String? = nil,
         clientId: String? = nil,
         clientSecret: String? = nil,
+        workspaceId: String? = nil,
+        accountId: String? = nil,
         timeout: TimeInterval = 30,
         debug: Bool = false
     ) {
@@ -37,6 +45,8 @@ public struct ErghiConfig: Sendable {
         self.apiKey = apiKey
         self.clientId = clientId
         self.clientSecret = clientSecret
+        self.workspaceId = workspaceId
+        self.accountId = accountId
         self.timeout = timeout
         self.debug = debug
     }
