@@ -34,14 +34,14 @@ final class ErghiSDKTests: XCTestCase {
     }
     
     func testWebSocketDerivation() {
-        let httpsConfig = ErghiConfig(apiURL: URL(string: "https://api.erghi.com")!)
-        XCTAssertEqual(httpsConfig.websocketURL.absoluteString, "wss://api.erghi.com")
+        let httpsConfig = ErghiConfig(apiURL: URL(string: "https://api.erghi.ai")!)
+        XCTAssertEqual(httpsConfig.websocketURL.absoluteString, "wss://api.erghi.ai")
         
         let httpConfig = ErghiConfig(apiURL: URL(string: "http://localhost:5000")!)
         XCTAssertEqual(httpConfig.websocketURL.absoluteString, "ws://localhost:5000")
         
         let explicitWSConfig = ErghiConfig(
-            apiURL: URL(string: "https://api.erghi.com")!,
+            apiURL: URL(string: "https://api.erghi.ai")!,
             wsURL: URL(string: "wss://custom.socket.io")!
         )
         XCTAssertEqual(explicitWSConfig.websocketURL.absoluteString, "wss://custom.socket.io")
