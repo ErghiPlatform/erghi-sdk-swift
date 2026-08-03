@@ -8,8 +8,12 @@ public enum ErghiError: Error, LocalizedError {
     case notFound(String)
     case validationError(String)
     case webSocketError(String)
+    /// The real-time hub rejected an invocation (a SignalR Completion message with an error)
+    /// -- for example ConversationOwnershipHubFilter denying JoinConversation/SendMessage/etc.
+    /// for a conversation outside the caller's own workspace.
+    case hubException(String)
     case unknown(String)
-    
+
     public var errorDescription: String? {
         switch self {
         case .authenticationFailed(let message):
@@ -24,6 +28,8 @@ public enum ErghiError: Error, LocalizedError {
             return "Validation error: \(message)"
         case .webSocketError(let message):
             return "WebSocket error: \(message)"
+        case .hubException(let message):
+            return "Hub rejected the request: \(message)"
         case .unknown(let message):
             return "Unknown error: \(message)"
         }
