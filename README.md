@@ -21,17 +21,31 @@ Official Swift SDK for the [Erghi Platform](https://erghi.ai) — Build AI-power
 
 ### Swift Package Manager
 
-Add to your `Package.swift`:
+Swift Package Manager requires `Package.swift` at the root of whatever git URL you give it --
+this package is developed here, inside the `erghi-sdks` monorepo, but *published* from a
+dedicated mirror repo (`erghi-sdk-swift`) whose root actually is this package, so that
+consumers can resolve it normally:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/ErghiPlatform/erghi-sdks.git", from: "1.0.0")
+    .package(url: "https://github.com/ErghiPlatform/erghi-sdk-swift.git", from: "1.0.0")
 ]
 ```
 
 Or in Xcode:
 1. File > Add Package Dependencies
-2. Enter: `https://github.com/ErghiPlatform/erghi-sdks.git`
+2. Enter: `https://github.com/ErghiPlatform/erghi-sdk-swift.git`
+
+**Maintainers, cutting a new release**: after bumping whatever needs bumping in this
+directory and merging to `erghi-sdks` main, mirror it out and tag it:
+
+```bash
+cd erghi-sdks
+git subtree split -P swift -b swift-package
+git push https://github.com/ErghiPlatform/erghi-sdk-swift.git swift-package:main
+git push https://github.com/ErghiPlatform/erghi-sdk-swift.git swift-package:refs/tags/X.Y.Z
+git branch -D swift-package
+```
 
 ## Quick Start
 
