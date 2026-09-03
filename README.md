@@ -6,6 +6,11 @@ Official Swift SDK for the [Erghi Platform](https://erghi.ai) — build AI-power
 [![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS-blue.svg)](https://developer.apple.com)
 [![SPM](https://img.shields.io/badge/SPM-compatible-brightgreen.svg)](https://swift.org/package-manager)
 
+**🟢 Active tier.** See [`parity.json`](./parity.json) in this repo for exactly which platform
+capabilities this SDK covers today, with file:line evidence, plus the cross-SDK
+[PARITY.md](https://github.com/ErghiPlatform/erghi-sdks/blob/main/PARITY.md) in the main SDK repo
+for how this compares to javascript/python/dotnet/flutter/react/angular/widget.
+
 ## Features
 
 - ✅ 100% Swift with async/await support
