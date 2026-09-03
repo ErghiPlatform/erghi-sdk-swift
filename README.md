@@ -1,6 +1,6 @@
 # Erghi Swift SDK
 
-Official Swift SDK for the [Erghi Platform](https://erghi.ai) — Build AI-powered chat experiences in your iOS, macOS, tvOS, and watchOS apps.
+Official Swift SDK for the [Erghi Platform](https://erghi.ai) — build AI-powered chat experiences in your iOS, macOS, tvOS, and watchOS apps.
 
 [![Swift](https://img.shields.io/badge/Swift-5.9-orange.svg)](https://swift.org)
 [![Platform](https://img.shields.io/badge/Platform-iOS%20%7C%20macOS%20%7C%20tvOS%20%7C%20watchOS-blue.svg)](https://developer.apple.com)
@@ -21,11 +21,6 @@ Official Swift SDK for the [Erghi Platform](https://erghi.ai) — Build AI-power
 
 ### Swift Package Manager
 
-Swift Package Manager requires `Package.swift` at the root of whatever git URL you give it --
-this package is developed here, inside the `erghi-sdks` monorepo, but *published* from a
-dedicated mirror repo (`erghi-sdk-swift`) whose root actually is this package, so that
-consumers can resolve it normally:
-
 ```swift
 dependencies: [
     .package(url: "https://github.com/ErghiPlatform/erghi-sdk-swift.git", from: "1.0.0")
@@ -35,17 +30,6 @@ dependencies: [
 Or in Xcode:
 1. File > Add Package Dependencies
 2. Enter: `https://github.com/ErghiPlatform/erghi-sdk-swift.git`
-
-**Maintainers, cutting a new release**: after bumping whatever needs bumping in this
-directory and merging to `erghi-sdks` main, mirror it out and tag it:
-
-```bash
-cd erghi-sdks
-git subtree split -P swift -b swift-package
-git push https://github.com/ErghiPlatform/erghi-sdk-swift.git swift-package:main
-git push https://github.com/ErghiPlatform/erghi-sdk-swift.git swift-package:refs/tags/X.Y.Z
-git branch -D swift-package
-```
 
 ## Quick Start
 
@@ -277,6 +261,10 @@ do {
 
 ## Development
 
+This SDK is developed directly in this repository (previously mirrored out of the
+`erghi-sdks` monorepo via `git subtree` — that step is gone now; this is the source
+of truth).
+
 ```bash
 # Build
 swift build
@@ -296,7 +284,7 @@ swift package generate-documentation
 
 ## Contributing
 
-Contributions are welcome! Please read our [contributing guide](CONTRIBUTING.md).
+Contributions are welcome — open an issue or a pull request.
 
 ## License
 
@@ -306,7 +294,7 @@ MIT License - see [LICENSE](LICENSE) file
 
 - 📧 Email: support@erghi.ai
 - 💬 Discord: [Join our community](https://discord.gg/erghi)
-- 📝 Issues: [GitHub Issues](https://github.com/ErghiPlatform/erghi-sdks/issues)
+- 📝 Issues: [GitHub Issues](https://github.com/ErghiPlatform/erghi-sdk-swift/issues)
 
 ---
 
