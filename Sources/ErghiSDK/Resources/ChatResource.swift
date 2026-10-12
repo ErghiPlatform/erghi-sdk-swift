@@ -28,6 +28,38 @@ public class ChatResource {
             .value
     }
     
+    /// List the workspace's conversations (agent/API-key auth), newest first.
+    public func listConversations(
+        page: Int = 1,
+        limit: Int = 50,
+        status: String? = nil
+    ) async throws -> PaginatedResponse<Conversation> {
+        var parameters: [String: Any] = ["page": page, "limit": limit]
+        if let status = status { parameters["status"] = status }
+        return try await session.request(
+            config.apiURL.appendingPathComponent("/api/conversations"),
+            method: .get,
+            parameters: parameters,
+            encoding: URLEncoding.queryString,
+            headers: headers
+        )
+        .validate()
+        .serializingDecodable(PaginatedResponse<Conversation>.self, decoder: dateDecoder)
+        .value
+    }
+
+    /// Close a conversation.
+    public func closeConversation(_ id: String) async throws {
+        _ = try await session.request(
+            config.apiURL.appendingPathComponent("/api/conversations/\(id)/close"),
+            method: .post,
+            headers: headers
+        )
+        .validate()
+        .serializingData(emptyResponseCodes: [200, 204])
+        .value
+    }
+
     /// Create a new conversation
     public func createConversation(
         widgetId: String,
@@ -100,7 +132,7 @@ public class ChatResource {
     public func markAsRead(conversationId: String) async throws {
         let request = session.request(
             config.apiURL.appendingPathComponent("/api/conversations/\(conversationId)/read"),
-            method: .put,
+            method: .post,
             headers: headers
         )
         _ = try await request
