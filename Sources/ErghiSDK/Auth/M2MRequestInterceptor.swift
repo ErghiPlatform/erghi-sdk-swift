@@ -26,7 +26,9 @@ internal final class M2MRequestInterceptor: RequestInterceptor, @unchecked Senda
             request.setValue(accountId, forHTTPHeaderField: "X-Account-Id")
         }
         
-        if request.url?.path.contains("/api/v1/auth/token") == true {
+        // A token already on the request wins (e.g. the password-recovery session).
+        if request.url?.path.contains("/api/v1/auth/token") == true
+            || request.value(forHTTPHeaderField: "Authorization") != nil {
             completion(.success(request))
             return
         }

@@ -6,8 +6,8 @@
   "tier_reason": "Real independent client, no wrapper alternative for native Apple platforms. Unlike react/angular (see erghi-sdks' PARITY.md for that decision), this SDK is not redundant with anything and stays actively invested.",
   "canonical_matrix": "https://github.com/ErghiPlatform/erghi-sdks/blob/main/PARITY.md",
   "sync_note": "This file is the SOURCE of truth for Swift's capability surface. erghi-sdks (the canonical multi-language SDK repo) keeps a manually-synced REFERENCE COPY at docs/parity/swift.json for its generated PARITY.md matrix, because SPM requires Package.swift at repo root and this SDK can't live inside that monorepo. Whoever edits this file's capabilities should also update erghi-sdks/docs/parity/swift.json in a follow-up PR there (or note it in this PR's description so a human does) -- there is no CI link between the two repos yet.",
-  "last_verified_against_api": "2026-09-03",
-  "last_verified_by": "erghi-sdk agent (source read, not docs)",
+  "last_verified_against_api": "2026-10-12",
+  "last_verified_by": "contract audit: every SDK path diffed against server routes + gateway map, plus per-SDK wire tests",
   "verification_method": "Read Sources/ErghiSDK/Resources/*.swift and ErghiClient.swift directly against erghi-conversation-api controllers.",
   "capabilities": {
     "auth": {
@@ -15,20 +15,20 @@
       "register": true,
       "refresh": true,
       "logout": true,
-      "password_reset": false,
-      "email_verification": false,
-      "evidence": "Sources/ErghiSDK/Resources/AuthResource.swift:18-115 -- register/login/refresh/me/logout/setTokens/storeM2MToken; no forgotPassword/resetPassword/verifyEmail."
+      "password_reset": true,
+      "email_verification": true,
+      "evidence": "Sources/ErghiSDK/Resources/AuthResource.swift -- register/login/refresh/me/logout/verifyEmail/forgotPassword/resetPassword against GoTrue behind /api/auth/*; Tests/ErghiSDKTests/AuthContractTests.swift."
     },
     "chat": {
       "create_conversation": true,
-      "list_conversations": false,
+      "list_conversations": true,
       "get_conversation": true,
-      "close_conversation": false,
+      "close_conversation": true,
       "send_message": true,
       "get_messages": true,
       "mark_read": true,
       "typing_indicator": false,
-      "evidence": "Sources/ErghiSDK/Resources/ChatResource.swift:19-100 -- getConversation/createConversation/getMessages/sendMessage/markAsRead; no listConversations, closeConversation, or sendTyping. Same gap shape as the flutter SDK in erghi-sdks."
+      "evidence": "Sources/ErghiSDK/Resources/ChatResource.swift -- get/list/create/close/getMessages/sendMessage/markAsRead (POST); Tests/ErghiSDKTests/ChatContractTests.swift. Typing is on ErghiClient (hub)."
     },
     "widgets": { "create": false, "list": false, "get": false, "update": false, "note": "No widget resource file." },
     "realtime": {
@@ -39,5 +39,5 @@
     "rag": { "supported": false, "note": "No SDK in erghi-sdks wraps RAG either -- platform-wide gap, not swift-specific." },
     "webhooks": { "supported": false, "note": "No customer-facing outbound webhook API exists on the platform yet." }
   },
-  "notes": "Missing listConversations/closeConversation/sendTyping and password-reset/email-verification -- the real active-tier catch-up target for this SDK, tracked alongside the equivalent flutter gap in erghi-sdks' PARITY.md. See that repo's parity-tracking PR (ErghiPlatform/erghi-sdks#15) for the full cross-SDK picture this file is one piece of."
+  "notes": "Closed the 2026-09 gaps (list/close conversations, password reset, email verification) on 2026-10-12. Remaining gaps vs javascript: widgets CRUD, typing on the resource, tool context, voice notes."
 }
