@@ -1,4 +1,4 @@
-## Unreleased
+## 1.1.0 (2026-11-05)
 
 - Fix: `AuthResource` now talks to the platform's real auth endpoints (`refresh` and `me`
   called paths that do not exist) and maps the auth server's snake_case session, which `login`

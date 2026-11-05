@@ -28,7 +28,7 @@ for how this compares to javascript/python/dotnet/flutter/react/angular/widget.
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/ErghiPlatform/erghi-sdk-swift.git", from: "1.0.0")
+    .package(url: "https://github.com/ErghiPlatform/erghi-sdk-swift.git", from: "1.1.0")
 ]
 ```
 
