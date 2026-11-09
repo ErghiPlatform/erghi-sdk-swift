@@ -8,6 +8,8 @@ final class AuthContractTests: XCTestCase {
     final class Stub: URLProtocol {
         static var respond: (URLRequest) -> (Int, [String: Any]) = { _ in (200, [:]) }
         static var seen: [(request: URLRequest, body: [String: Any])] = []
+        /// When set, sent as the body instead of the JSON from `respond` (for non-JSON responses).
+        static var rawBody: Data?
 
         override class func canInit(with request: URLRequest) -> Bool { true }
         override class func canonicalRequest(for request: URLRequest) -> URLRequest { request }
@@ -32,7 +34,7 @@ final class AuthContractTests: XCTestCase {
             let (status, json) = Stub.respond(request)
             let response = HTTPURLResponse(url: request.url!, statusCode: status, httpVersion: nil, headerFields: nil)!
             client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
-            client?.urlProtocol(self, didLoad: try! JSONSerialization.data(withJSONObject: json))
+            client?.urlProtocol(self, didLoad: Stub.rawBody ?? (try! JSONSerialization.data(withJSONObject: json)))
             client?.urlProtocolDidFinishLoading(self)
         }
     }

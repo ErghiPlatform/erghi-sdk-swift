@@ -16,6 +16,10 @@ public class ErghiClient {
         self?.visitorId
     }
 
+    public private(set) lazy var insights: InsightsResource = InsightsResource(
+        config: config, session: session, auth: auth
+    )
+
     private let session: Session
     private var webSocket: WebSocket?
     private let messageSubject = PassthroughSubject<Message, Never>()
