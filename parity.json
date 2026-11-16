@@ -30,14 +30,36 @@
       "typing_indicator": false,
       "evidence": "Sources/ErghiSDK/Resources/ChatResource.swift -- get/list/create/close/getMessages/sendMessage/markAsRead (POST); Tests/ErghiSDKTests/ChatContractTests.swift. Typing is on ErghiClient (hub)."
     },
-    "widgets": { "create": false, "list": false, "get": false, "update": false, "note": "No widget resource file." },
+    "widgets": {
+      "create": false,
+      "list": false,
+      "get": false,
+      "update": false,
+      "note": "No widget resource file."
+    },
     "realtime": {
       "supported": true,
       "protocol": "signalr-hub-over-websocket, hand-rolled negotiate handshake over Starscream WebSocket (no native Swift SignalR client exists)",
       "evidence": "Sources/ErghiSDK/ErghiClient.swift:20,66,104"
     },
-    "rag": { "supported": false, "note": "No SDK in erghi-sdks wraps RAG either -- platform-wide gap, not swift-specific." },
-    "webhooks": { "supported": false, "note": "No customer-facing outbound webhook API exists on the platform yet." }
+    "inbox": {
+      "labels": true,
+      "conversation_notes": true,
+      "canned_responses": true,
+      "contacts": true,
+      "notifications": true,
+      "verified": "2026-11-16",
+      "evidence": "Sources/ErghiSDK/Resources/InboxResource.swift + ContactsResource.swift in erghi-sdk-swift; Tests/ErghiSDKTests/InboxContractTests.swift",
+      "note": "Workspace (admin/API-key or member-token) surface, never the visitor surface. Needs a member access token: API keys cannot hold view_conversations/manage_inbox_settings/manage_contacts. Contacts, notifications, @mentions and unassign require platform PR #256 (not merged when this was written)."
+    },
+    "rag": {
+      "supported": false,
+      "note": "No SDK in erghi-sdks wraps RAG either -- platform-wide gap, not swift-specific."
+    },
+    "webhooks": {
+      "supported": false,
+      "note": "No customer-facing outbound webhook API exists on the platform yet."
+    }
   },
   "notes": "Closed the 2026-09 gaps (list/close conversations, password reset, email verification) on 2026-10-12. Remaining gaps vs javascript: widgets CRUD, typing on the resource, tool context, voice notes."
 }
