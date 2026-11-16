@@ -45,7 +45,7 @@ final class InsightsContractTests: XCTestCase {
         ])
         XCTAssertEqual(result.total, 4)
         XCTAssertEqual(result.aiResolvedRate, 0.5)
-        XCTAssertEqual(result.topics.first?.key, "refund")
+        XCTAssertEqual(result.topics?.first?.key, "refund")
     }
 
     func testListConversationsPagesAndParsesRows() async throws {
@@ -66,6 +66,45 @@ final class InsightsContractTests: XCTestCase {
         XCTAssertEqual(page.items.first?.language, "ar-EG")
         XCTAssertEqual(page.items.first?.sentimentEnd, "Neutral")
         XCTAssertNotNil(page.items.first?.classifiedAt)
+    }
+
+    func testStarterPlanLockedFieldsDecodeAsNil() async throws {
+        let summary = makeInsights([
+            "total": 3, "aiResolvedRate": NSNull(),
+            "outcomes": [["key": "ResolvedByAi", "count": 3]], "sentiments": [],
+            "categories": NSNull(), "topics": NSNull(), "languages": NSNull(),
+            "plan": "Starter", "locked": ["topics", "categories", "languages"],
+            "lockedCounts": ["topics": 14, "categories": 3], "windowDays": 30,
+            "from": "2026-10-18T00:00:00Z",
+        ])
+        let result = try await summary.summary()
+        XCTAssertNil(result.topics)
+        XCTAssertNil(result.categories)
+        XCTAssertNil(result.languages)
+        XCTAssertNil(result.aiResolvedRate)
+        XCTAssertEqual(result.plan, "Starter")
+        XCTAssertEqual(result.locked, ["topics", "categories", "languages"])
+        XCTAssertEqual(result.lockedCounts?["topics"], 14)
+        XCTAssertEqual(result.windowDays, 30)
+        XCTAssertNotNil(result.from)
+
+        let row: [String: Any] = [
+            "conversationId": "7b1c0d2e-0000-4000-8000-000000000002", "topic": NSNull(),
+            "category": NSNull(), "sentiment": "Positive", "sentimentEnd": "Positive",
+            "outcome": "ResolvedByAi", "language": NSNull(), "summary": NSNull(),
+            "confidence": NSNull(), "classifiedAt": "2026-11-09T10:14:03Z", "stale": false,
+        ]
+        let list = makeInsights([
+            "total": 1, "page": 1, "pageSize": 25, "items": [row], "plan": "Starter",
+            "locked": ["topic", "category", "language", "summary", "confidence"],
+            "windowDays": 30, "from": "2026-10-18T00:00:00Z",
+        ])
+        let page = try await list.listConversations()
+        XCTAssertNil(page.items.first?.topic)
+        XCTAssertNil(page.items.first?.confidence)
+        XCTAssertEqual(page.items.first?.outcome, "ResolvedByAi")
+        XCTAssertEqual(page.plan, "Starter")
+        XCTAssertEqual(page.windowDays, 30)
     }
 
     func testExportCSVReturnsRawBytes() async throws {
