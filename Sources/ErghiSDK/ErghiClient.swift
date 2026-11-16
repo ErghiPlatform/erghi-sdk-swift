@@ -20,6 +20,11 @@ public class ErghiClient {
         config: config, session: session, auth: auth
     )
 
+    private lazy var workspaceHTTP = WorkspaceHTTP(config: config, session: session, auth: auth)
+
+    public private(set) lazy var inbox: InboxResource = InboxResource(http: workspaceHTTP)
+    public private(set) lazy var contacts: ContactsResource = ContactsResource(http: workspaceHTTP)
+
     private let session: Session
     private var webSocket: WebSocket?
     private let messageSubject = PassthroughSubject<Message, Never>()

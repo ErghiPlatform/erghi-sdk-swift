@@ -219,6 +219,20 @@ struct MessageRow: View {
 }
 ```
 
+## Inbox and Contacts
+
+Workspace operations: use a signed-in teammate's access token on your server (workspace API keys cannot hold these permissions), never in a visitor's browser. The workspace comes from the credential. Contacts, notifications and `unassign` need platform PR #256; see the Inbox and contacts guide (`docs/docs/guides/INBOX_AND_CONTACTS.md` in erghi-sdks).
+
+```swift
+let labels = try await client.inbox.listLabels()
+let vip = try await client.inbox.createLabel(name: "VIP", color: "#d97706")
+_ = try await client.inbox.addConversationLabel(conversationId: conversationId, labelId: vip.id)
+_ = try await client.inbox.createCannedResponse(shortCode: "hi", content: "Hello! How can I help?")
+
+let page = try await client.contacts.list(search: "ann", pageSize: 20) // requires #256
+try await client.contacts.block(id: page.items[0].id)
+```
+
 ## Error Handling
 
 ```swift
