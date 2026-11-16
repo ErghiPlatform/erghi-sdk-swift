@@ -58,9 +58,22 @@ public struct InsightSummary: Codable, Equatable {
     public let aiResolvedRate: Double?
     public let outcomes: [InsightCount]
     public let sentiments: [InsightCount]
-    public let categories: [InsightCount]
-    public let topics: [InsightCount]
-    public let languages: [InsightCount]
+    /// nil when the workspace's plan locks it (named in `locked`).
+    public let categories: [InsightCount]?
+    /// nil when the workspace's plan locks it (named in `locked`).
+    public let topics: [InsightCount]?
+    /// nil when the workspace's plan locks it (named in `locked`).
+    public let languages: [InsightCount]?
+    /// The workspace's effective plan. Free workspaces get a 403 `plan_upgrade_required` instead.
+    public let plan: String?
+    /// Fields the plan locks, e.g. `["topics", "categories", "languages"]` on Starter.
+    public let locked: [String]?
+    /// Distinct topics and categories found while they are locked, e.g. `["topics": 14]`.
+    public let lockedCounts: [String: Int]?
+    /// Days of history the plan can read.
+    public let windowDays: Int?
+    /// Effective start of the window after clamping to `windowDays`.
+    public let from: Date?
 }
 
 /// One classified conversation. Sentiments are Positive/Neutral/Negative; `outcome` is
@@ -68,14 +81,15 @@ public struct InsightSummary: Codable, Equatable {
 /// BCP-47 tag; `stale` means it was reopened and is reclassified on its next close.
 public struct InsightConversation: Codable, Equatable {
     public let conversationId: String
-    public let topic: String
-    public let category: String
+    /// nil when the plan locks it, as are `category`, `language`, `summary` and `confidence`.
+    public let topic: String?
+    public let category: String?
     public let sentiment: String
     public let sentimentEnd: String
     public let outcome: String
-    public let language: String
-    public let summary: String
-    public let confidence: Double
+    public let language: String?
+    public let summary: String?
+    public let confidence: Double?
     public let classifiedAt: Date
     public let stale: Bool
 }
@@ -85,6 +99,12 @@ public struct InsightPage: Codable, Equatable {
     public let page: Int
     public let pageSize: Int
     public let items: [InsightConversation]
+    public let plan: String?
+    /// Fields the plan locks; their values are nil on each item.
+    public let locked: [String]?
+    public let windowDays: Int?
+    /// Effective start of the window.
+    public let from: Date?
 }
 
 /// Conversation Insights: topic, sentiment and outcome of finished conversations.
